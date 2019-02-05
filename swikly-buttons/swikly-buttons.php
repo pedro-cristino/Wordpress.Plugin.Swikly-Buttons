@@ -18,8 +18,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 const PLUGIN_NAME = "Swikly Buttons";
 
-add_action("wp_footer", "createButton");
-add_action('wp_enqueue_scripts','initSwiklyButtonsJavascript');
+
+if(get_option("swikly_displayed_on_cart") == "1"){
+	add_action("wp_footer", "createButton");
+	add_action('wp_enqueue_scripts','initSwiklyButtonsJavascript');
+}
 add_action('admin_menu', 'addAdminMenu' );
 add_action('admin_init', 'update_swikly_buttons_info' );
 add_shortcode("swikly-button", "swiklyShortcode");
@@ -46,6 +49,7 @@ function update_swikly_buttons_info() {
 	register_setting( 'swikly_buttons_settings', 'swikly_button_class' );
 	register_setting( 'swikly_buttons_settings', 'swikly_displayed_on_cart' );
 	register_setting( 'swikly_buttons_settings', 'swikly_form_description' );
+	register_setting( 'swikly_buttons_settings', 'swikly_sandbox_mode' );
   }
 
 function swiklyShortcode($atts, $content, $tag){
@@ -64,7 +68,7 @@ function swiklyShortcode($atts, $content, $tag){
 	return "<a class='".$classe."' href='".generateFormUrl($message,$montant)."'>".$texte ."</a>";
 }
 function initSwiklyButtonsJavascript() {
-    wp_enqueue_script( 'script', plugins_url( '/includes/js/swikly-buttons.js', __FILE__ ));
+	wp_enqueue_script( 'script', plugins_url( '/includes/js/swikly-buttons.js', __FILE__ ));
 }
 
 function createButton() {
@@ -82,7 +86,10 @@ function createButton() {
 
 function generateFormUrl($message,$amountPayment){
 
-	$baseUrl = "https://www.swikly.com/checkout/";
+	if(get_option("swikly_sandbox_mode"))
+		$baseUrl = "https://sandbox.swikly.com/checkout/";
+	else
+		$baseUrl = "https://www.swikly.com/checkout/";
 	
 	$description = $message == "" ? urlencode(get_option('swikly_form_description')) : urlencode($message);
 	$linkId = get_option("swikly_link_id");

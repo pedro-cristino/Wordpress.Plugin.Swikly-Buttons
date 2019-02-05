@@ -24,9 +24,7 @@
 			<th><label for='swikly_displayed_on_cart'>L'afficher sur la page panier</label></th>
 			
 			<td style="text-align:left">
-				<input id="swikly_displayed_on_cart" name="swikly_displayed_on_cart" 
-				
-				value="1" <?php checked(1, get_option('swikly_displayed_on_cart'), true); ?> type="checkbox" />
+				<input id="swikly_displayed_on_cart" name="swikly_displayed_on_cart" value="1" <?php checked(1, get_option('swikly_displayed_on_cart'), true); ?> type="checkbox" />
 			</td>
 		</tr>
 		<tr>
@@ -68,9 +66,12 @@
 					<input type="text" style="width:100%" name="swikly_forced_client_fee" value="<?php echo get_option( 'swikly_forced_client_fee' ); ?>"/>
 				</td>
 			</tr>
-
-
-			
+			<tr>
+				<th title="Il faut penser à utiliser les informations de sandbox pour faire marcher ce mode">Activer le sandbox mode *</th>
+				<td style="text-align:left">
+				<input id="swikly_sandbox_mode" name="swikly_sandbox_mode" value="1" <?php checked(1, get_option('swikly_sandbox_mode'), true); ?> type="checkbox" />
+				</td>
+			</tr>
 		</tbody>
 	  </table> 
     <?php submit_button(); ?>
